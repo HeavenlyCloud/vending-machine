@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🍓 Chibi Vendo</title>
+  <title>Chibi Vendo</title>
   <style>
       
 body {
@@ -320,9 +320,7 @@ authorTag.style.borderTop = "1px dashed #ffc8dd";
 authorTag.style.paddingTop = "4px";
 
 document.querySelector(".machine").appendChild(authorTag);
-// ...existing code...
 
-// ...existing code...
 document.querySelectorAll(".item").forEach(item => {
   item.addEventListener("click", () => {
     const price = Number(item.dataset.price);
@@ -335,7 +333,6 @@ document.querySelectorAll(".item").forEach(item => {
 
       animateSlot(emoji);
 
-      // write to the dedicated receipt log
       receiptLog.textContent = `Purchased: ${emoji} NT$${price}\n`;
 
       updateAffordableItems();
