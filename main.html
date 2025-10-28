@@ -287,39 +287,31 @@ receiptEl.style.marginTop = "10px";
 receiptEl.style.fontSize = "0.85em";
 receiptEl.style.color = "#ff477e";
 receiptEl.style.textAlign = "left";
-receiptEl.style.whiteSpace = "pre-line";
-receiptEl.style.wordWrap = "break-word";
-receiptEl.style.height = "100px";
-receiptEl.style.overflowY = "auto";
+receiptEl.style.whiteSpace = "pre-line";   
+receiptEl.style.wordWrap = "break-word";    
+receiptEl.style.height = "100px";           
+receiptEl.style.overflowY = "auto";         
 receiptEl.style.borderTop = "1px solid #ffb3c6";
 receiptEl.style.paddingTop = "5px";
 receiptEl.style.paddingLeft = "5px";
-
-// create a dedicated log area so updates don't overwrite the author tag
-const receiptLog = document.createElement("div");
-receiptLog.id = "receipt-log";
-receiptLog.style.whiteSpace = "pre-line";
-receiptLog.style.wordWrap = "break-word";
-receiptLog.style.minHeight = "60px";
-receiptLog.style.color = "#ff477e";
-receiptLog.style.paddingRight = "6px";
-
-// put the log inside the receipt container and append to machine
-receiptEl.appendChild(receiptLog);
 document.querySelector(".machine").appendChild(receiptEl);
 
-// author tag appended after receipt area so it's not removed when the log updates
-const authorTag = document.createElement("div");
-authorTag.textContent = "👩‍💻 Created by Chandyl S. Torreon | 天云 (Yǔ Tiān Yún)";
-authorTag.style.fontSize = "0.75em";
-authorTag.style.color = "#999";
-authorTag.style.marginTop = "8px";
-authorTag.style.textAlign = "center";
-authorTag.style.fontStyle = "italic";
-authorTag.style.borderTop = "1px dashed #ffc8dd";
-authorTag.style.paddingTop = "4px";
 
-document.querySelector(".machine").appendChild(authorTag);
+
+function updateAffordableItems() {
+  document.querySelectorAll(".item").forEach(item => {
+    const price = Number(item.dataset.price);
+    if (balance < price) {
+      item.style.opacity = "0.5";
+      item.style.pointerEvents = "none";
+    } else {
+      item.style.opacity = "1";
+      item.style.pointerEvents = "auto";
+    }
+  });
+}
+
+updateAffordableItems();
 
 document.querySelectorAll(".item").forEach(item => {
   item.addEventListener("click", () => {
@@ -333,7 +325,7 @@ document.querySelectorAll(".item").forEach(item => {
 
       animateSlot(emoji);
 
-      receiptLog.textContent = `Purchased: ${emoji} NT$${price}\n`;
+      receiptEl.textContent = `Purchased: ${emoji} NT$${price}\n`;
 
       updateAffordableItems();
 
@@ -357,16 +349,15 @@ document.querySelectorAll(".item").forEach(item => {
               }
             });
 
-            // append change info to the receipt log
-            receiptLog.textContent += ` | ${changeMessage}`;
+            receiptEl.textContent += ` | ${changeMessage}`;
             updateAffordableItems();
-          }, 1300);
-        }, 1000);
+          }, 1300); 
+        }, 1000); 
       }
 
     } else {
       beep.play();
-      receiptLog.textContent = "Not enough balance 💸";
+      receiptEl.textContent = "Not enough balance 💸";
     }
   });
 });
