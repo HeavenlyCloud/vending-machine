@@ -294,8 +294,20 @@ receiptEl.style.overflowY = "auto";
 receiptEl.style.borderTop = "1px solid #ffb3c6";
 receiptEl.style.paddingTop = "5px";
 receiptEl.style.paddingLeft = "5px";
+
 document.querySelector(".machine").appendChild(receiptEl);
 
+const authorTag = document.createElement("div");
+authorTag.textContent = "👩‍💻 Created by Chandyl S. Torreon | 天云 (Yǔ Tiān Yún)";
+authorTag.style.fontSize = "0.75em";
+authorTag.style.color = "#999";
+authorTag.style.marginTop = "8px";
+authorTag.style.textAlign = "center";
+authorTag.style.fontStyle = "italic";
+authorTag.style.borderTop = "1px dashed #ffc8dd";
+authorTag.style.paddingTop = "4px";
+
+receiptEl.appendChild(authorTag);
 
 
 function updateAffordableItems() {
