@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🍓 Chibi Vendo</title>
+  <style>
+      
+body {
+  background: linear-gradient(180deg, #a0c4ff, #bdb2ff);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Poppins", sans-serif;
+  overflow: hidden;
+}
+
+.machine {
+  width: 350px;
+  background: #ffe3e3;
+  border-radius: 25px;
+  box-shadow: 0 0 30px rgba(255, 182, 193, 0.6);
+  text-align: center;
+  padding: 20px;
+  border: 4px solid #ffb3c6;
+  position: relative;
+}
+
+.header {
+  font-size: 1.6em;
+  color: #ff477e;
+  font-weight: bold;
+  margin-bottom: 15px;
+  text-shadow: 0 0 5px #fff;
+}
+
+.window {
+  background: #fff;
+  border-radius: 15px;
+  padding: 10px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 12px;
+  border: 3px solid #ffcad4;
+  box-shadow: inset 0 0 10px #ffd6ff;
+}
+
+.item {
+  background: #ffdeeb;
+  border-radius: 12px;
+  font-size: 1.8em;
+  padding: 10px;
+  cursor: pointer;
+  transition: transform 0.15s, background 0.2s;
+}
+
+.item span {
+  display: block;
+  font-size: 0.75em;
+  color: #555;
+}
+
+.item:hover {
+  transform: translateY(-3px);
+  background: #ffc8dd;
+}
+
+.display {
+  background: #222;
+  color: #00ffae;
+  border-radius: 10px;
+  padding: 6px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  box-shadow: inset 0 0 5px #000;
+}
+
+.denom-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.coin-slot, .bill-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #ffe3e3;
+  border: 2px solid #ffb3c6;
+  border-radius: 15px;
+  padding: 10px;
+  width: 80%;
+  box-shadow: inset 0 0 5px #ffd6ff;
+}
+
+.slot-label {
+  font-size: 0.80em;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #ff477e;
+}
+
+.coins, .bills {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.denom {
+  width: 45px;
+  height: 45px;
+  font-size: 1em;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bill {
+  border-radius: 10px;
+  width: 75px;
+  height: 35px;
+}
+
+
+.denom:hover {
+  transform: scale(1.1);
+  filter: brightness(1.1);
+}
+
+#return {
+  border: none;
+  background: #ffb3c6;
+  border-radius: 10px;
+  padding: 8px 15px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.1s;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+#return:hover {
+  transform: scale(1.1);
+}
+
+.slot {
+  background: #3a3a3a;
+  color: #fff;
+  height: 90px;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  overflow: hidden;
+  position: relative;
+  box-shadow: inset 0 0 10px #000;
+  font-size: 1.2em;
+}
+
+.slot.animate::after {
+  content: attr(data-emoji);
+  position: absolute;
+  animation: drop 1.2s ease-in-out forwards;
+  font-size: 2.3em;
+}
+
+@keyframes drop {
+  0% { top: -40px; opacity: 0; }
+  40% { opacity: 1; }
+  100% { top: 60px; opacity: 0; }
+}
+
+.money-fall {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 999;
+}
+
+.money {
+  position: absolute;
+  font-size: 2em;
+  animation: fall 1.5s linear forwards;
+}
+
+@keyframes fall {
+  0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+}
+
+      
+  </style>
+</head>
+<body>
+  <div class="machine">
+    <div class="header">🍓 Chibi Vendo</div>
+
+    <div class="window">
+      <!-- Products -->
+      <div class="item" data-price="25" data-emoji="🧃">🧃<span>NT$25</span></div>
+      <div class="item" data-price="30" data-emoji="🥤">🥤<span>NT$30</span></div>
+      <div class="item" data-price="20" data-emoji="🍵">🍵<span>NT$20</span></div>
+      <div class="item" data-price="15" data-emoji="🥛">🥛<span>NT$15</span></div>
+      <div class="item" data-price="40" data-emoji="🍫">🍫<span>NT$40</span></div>
+      <div class="item" data-price="50" data-emoji="🍪">🍪<span>NT$50</span></div>
+      <div class="item" data-price="35" data-emoji="🧋">🧋<span>NT$35</span></div>
+      <div class="item" data-price="45" data-emoji="🍩">🍩<span>NT$45</span></div>
+      <div class="item" data-price="10" data-emoji="🍬">🍬<span>NT$10</span></div>
+    </div>
+
+    <div class="display">Balance: <span id="balance">NT$0</span></div>
+
+    <div class="denom-slot">
+  <div class="coin-slot">
+    <div class="slot-label">Insert Coins</div>
+    <div class="coins">
+      <button class="denom coin" data-amount="1">🪙1</button>
+      <button class="denom coin" data-amount="5">🪙5</button>
+      <button class="denom coin" data-amount="10">🪙10</button>
+      <button class="denom coin" data-amount="50">🪙50</button>
+    </div>
+  </div>
+
+  <div class="bill-slot">
+    <div class="slot-label">Insert Bills</div>
+    <div class="bills">
+      <button class="denom bill" data-amount="100">💵100</button>
+      <button class="denom bill" data-amount="500">💴500</button>
+      <button class="denom bill" data-amount="1000">💶1000</button>
+    </div>
+  </div>
+
+  <button id="return">↩️ Return</button>
+</div>
+
+
+    <div class="slot" id="slot">CLICK!</div>
+  </div>
+
+  <audio id="beep" src="https://assets.mixkit.co/sfx/preview/mixkit-soft-button-click-1117.mp3"></audio>
+  <audio id="drop" src="https://assets.mixkit.co/sfx/preview/mixkit-metal-hit-woosh-1480.mp3"></audio>
+
+  <script>
+
+const balanceEl = document.getElementById("balance");
+const beep = document.getElementById("beep");
+const drop = document.getElementById("drop");
+const slot = document.getElementById("slot");
+
+let balance = 0;
+
+document.querySelectorAll(".denom").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const amount = Number(btn.dataset.amount);
+    balance += amount;
+    beep.play();
+    updateDisplay();
+    updateAffordableItems();
+  });
+});
+
+document.getElementById("return").addEventListener("click", () => {
+  if (balance > 0) {
+    drop.play();
+    makeMoneyRain(balance);
+
+    const returned = balance;
+    balance = 0;
+    updateDisplay();
+
+    setTimeout(() => alert(`Returned NT$${returned}`), 400);
+  }
+});
+
+const receiptEl = document.createElement("div");
+receiptEl.style.marginTop = "10px";
+receiptEl.style.fontSize = "0.85em";
+receiptEl.style.color = "#ff477e";
+receiptEl.style.textAlign = "left";
+receiptEl.style.whiteSpace = "pre-line";   
+receiptEl.style.wordWrap = "break-word";    
+receiptEl.style.height = "100px";           
+receiptEl.style.overflowY = "auto";         
+receiptEl.style.borderTop = "1px solid #ffb3c6";
+receiptEl.style.paddingTop = "5px";
+receiptEl.style.paddingLeft = "5px";
+document.querySelector(".machine").appendChild(receiptEl);
+
+
+
+function updateAffordableItems() {
+  document.querySelectorAll(".item").forEach(item => {
+    const price = Number(item.dataset.price);
+    if (balance < price) {
+      item.style.opacity = "0.5";
+      item.style.pointerEvents = "none";
+    } else {
+      item.style.opacity = "1";
+      item.style.pointerEvents = "auto";
+    }
+  });
+}
+
+updateAffordableItems();
+
+document.querySelectorAll(".item").forEach(item => {
+  item.addEventListener("click", () => {
+    const price = Number(item.dataset.price);
+    const emoji = item.dataset.emoji;
+
+    if (balance >= price) {
+      balance -= price;
+      updateDisplay();
+      drop.play();
+
+      animateSlot(emoji);
+
+      receiptEl.textContent = `Purchased: ${emoji} NT$${price}\n`;
+
+      updateAffordableItems();
+
+      if (balance > 0) {
+        const returned = balance;
+        balance = 0;
+        updateDisplay();
+
+        setTimeout(() => {
+          makeMoneyRain(returned);
+
+          setTimeout(() => {
+            const denominations = [50, 10, 5, 1];
+            let remaining = returned;
+            let changeMessage = `Change returned: NT$${returned}\n`;
+            denominations.forEach(d => {
+              const count = Math.floor(remaining / d);
+              if (count > 0) {
+                changeMessage += `[${d} x ${count}] `;
+                remaining %= d;
+              }
+            });
+
+            receiptEl.textContent += ` | ${changeMessage}`;
+            updateAffordableItems();
+          }, 1300); 
+        }, 1000); 
+      }
+
+    } else {
+      beep.play();
+      receiptEl.textContent = "Not enough balance 💸";
+    }
+  });
+});
+
+
+
+function updateDisplay() {
+  balanceEl.textContent = `NT$${balance}`;
+}
+
+function animateSlot(emoji) {
+  slot.classList.add("animate");
+  slot.setAttribute("data-emoji", emoji);
+  slot.textContent = "";
+  setTimeout(() => {
+    slot.classList.remove("animate");
+    slot.textContent = "CLICK!";
+  }, 1200);
+}  
+
+function makeMoneyRain(amount) {
+  const container = document.createElement("div");
+  container.className = "money-fall";
+  document.body.appendChild(container);
+
+  const symbols = ["🪙", "✨", "💰"];
+
+  for (let i = 0; i < 25; i++) {
+    const m = document.createElement("div");
+    m.className = "money";
+    m.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+    m.style.left = Math.random() * 100 + "vw";
+    m.style.animationDuration = (1 + Math.random()) + "s";
+    container.appendChild(m);
+  }
+
+  setTimeout(() => container.remove(), 1500);
+}
+                                       
+      
+  </script>
+</body>
+</html>
